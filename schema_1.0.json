@@ -1,0 +1,27 @@
+{
+  "dataset_name": "string (required)",
+  "description": "string (required)",
+  "version": "string (e.g., '1.0.0')",
+  "created_on": "YYYY-MM-DD",
+  "updated_on": "YYYY-MM-DD",
+  "contributors": [
+    {
+      "name": "string",
+      "email": "string (optional)",
+      "role": "string (e.g., author, curator, reviewer)"
+    }
+  ],
+  "data_files": [
+    {
+      "file_name": "string",
+      "file_type": "string (e.g., csv, json, pdf, jpg)",
+      "uploaded_on": "YYYY-MM-DD",
+      "checksum": "SHA256 or MD5 hash (optional for integrity)"
+    }
+  ],
+  "tags": ["list", "of", "keywords"],
+  "license": "string (e.g., CC-BY-4.0, MIT, etc.)",
+  "source": "string (URL or citation)",
+  "schema_version": "string (e.g., '1.0')"
+}
+
