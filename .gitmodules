@@ -1,0 +1,6 @@
+[submodule "datasets/sidd"]
+	path = datasets/sidd
+	url = https://github.com/DLakesummer/sidd
+[submodule "datasets/test_ds"]
+	path = datasets/test_ds
+	url = https://github.com/DLakesummer/test_ds
