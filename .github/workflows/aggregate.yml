@@ -1,0 +1,33 @@
+name: Aggregate Metadata
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main repo and submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Run metadata aggregation script
+        run: python aggregate_metadata.py
+
+      - name: Commit and push updated all_metadata.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add all_metadata.json
+          git commit -m "Update combined all_metadata.json" || echo "No changes to commit"
+          git push origin main
