@@ -1,6 +1,9 @@
 import json
 import os
 
+print("👉 Running associative array version of aggregate_metadata.py")
+
+
 # Set up paths
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATASETS_DIR = os.path.join(ROOT_DIR, "datasets")
