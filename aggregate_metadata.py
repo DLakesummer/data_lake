@@ -1,27 +1,39 @@
 import json
 import os
 
+# Set up paths file direcrtorty 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-SUBMODULES_DIR = os.path.join(ROOT_DIR, "datasets")
+DATASETS_DIR = os.path.join(ROOT_DIR, "datasets")
 OUTPUT_FILE = os.path.join(ROOT_DIR, "all_metadata.json")
 
-all_metadata = []
+# This will store metadata per submodule name
+all_metadata = {}
 
-for submodule_name in os.listdir(SUBMODULES_DIR):
-    submodule_path = os.path.join(SUBMODULES_DIR, submodule_name)
+# Loop through each folder inside datasets/
+for submodule_name in os.listdir(DATASETS_DIR):
+    submodule_path = os.path.join(DATASETS_DIR, submodule_name)
     metadata_path = os.path.join(submodule_path, "metadata.json")
 
+    # Skip if not a directory or metadata.json not found
     if os.path.isdir(submodule_path) and os.path.isfile(metadata_path):
-        with open(metadata_path, "r") as f:
-            try:
-                data = json.load(f)
-                all_metadata.append(data)
-                print(f"Loaded metadata from: {submodule_name}")
-            except json.JSONDecodeError as e:
-                print(f"⚠️ Error decoding JSON in {metadata_path}: {e}")
+        try:
+            with open(metadata_path, "r") as f:
+                metadata = json.load(f)
 
-# Save to all_metadata.json
+                # If the metadata is a list (wrapped), just grab the first item
+                if isinstance(metadata, list) and len(metadata) == 1:
+                    metadata = metadata[0]
+
+                all_metadata[submodule_name] = metadata
+                print(f"✅ Loaded metadata from: {submodule_name}")
+
+        except json.JSONDecodeError as e:
+            print(f"⚠️ Error reading {metadata_path}: {e}")
+
+# Dump the dictionary (not a list!) to all_metadata.json
 with open(OUTPUT_FILE, "w") as f:
     json.dump(all_metadata, f, indent=4)
-    print(f"\n✅ Combined metadata saved to {OUTPUT_FILE}")
+
+print(f"\n✅ Combined metadata saved to {OUTPUT_FILE}")
+
 
