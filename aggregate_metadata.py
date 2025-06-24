@@ -27,4 +27,7 @@ for submodule_name in os.listdir(DATASETS_DIR):
         except json.JSONDecodeError as e:
             print(f"⚠️ JSON decode error in {metadata_path}: {e}")
 
-with open(
+with open(OUTPUT_FILE, "w") as f:
+    json.dump(all_metadata, f, indent=4)
+
+print(f"\n✅ Combined metadata saved to {OUTPUT_FILE}")
