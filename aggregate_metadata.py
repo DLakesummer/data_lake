@@ -1,39 +1,32 @@
 import json
 import os
 
-# Set up paths
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-SUBMODULES_DIR = os.path.join(ROOT_DIR, "datasets")
+DATASETS_DIR = os.path.join(ROOT_DIR, "datasets")
 OUTPUT_FILE = os.path.join(ROOT_DIR, "all_metadata.json")
 
-all_metadata = {}
+combined_metadata = []
 
-# Read each submodule folder
-for submodule_name in os.listdir(SUBMODULES_DIR):
-    if submodule_name.startswith("."):
-        continue  # Skip hidden/system folders
-
-    submodule_path = os.path.join(SUBMODULES_DIR, submodule_name)
+for submodule_name in os.listdir(DATASETS_DIR):
+    submodule_path = os.path.join(DATASETS_DIR, submodule_name)
     metadata_path = os.path.join(submodule_path, "metadata.json")
 
+    # Check if it is a directory and metadata.json exists
     if os.path.isdir(submodule_path) and os.path.isfile(metadata_path):
-        try:
-            with open(metadata_path, "r") as f:
+        with open(metadata_path, "r") as f:
+            try:
                 data = json.load(f)
-                all_metadata[submodule_name] = data
-                print(f"✅ Loaded metadata from: {submodule_name}")
-        except Exception as e:
-            print(f"⚠️ Could not read {metadata_path}: {e}")
+                # If metadata.json contains a list, extend the combined list
+                if isinstance(data, list):
+                    combined_metadata.extend(data)
+                else:
+                    combined_metadata.append(data)
+                print(f"Loaded metadata from {submodule_name}")
+            except json.JSONDecodeError as e:
+                print(f"Error decoding JSON in {metadata_path}: {e}")
 
-# Save to all_metadata.json using Python dict formatting (not valid JSON)
+# Write combined list to output file as JSON array
 with open(OUTPUT_FILE, "w") as f:
-    f.write("{\n")
-    for i, (name, metadata) in enumerate(all_metadata.items()):
-        f.write(f"  '{name}': {json.dumps(metadata, indent=2)}")
-        if i < len(all_metadata) - 1:
-            f.write(",\n")
-        else:
-            f.write("\n")
-    f.write("}\n")
+    json.dump(combined_metadata, f, indent=4)
 
-print(f"\n✅ Finished! Output written to {OUTPUT_FILE}")
+print(f"\nAll metadata combined into {OUTPUT_FILE}")
