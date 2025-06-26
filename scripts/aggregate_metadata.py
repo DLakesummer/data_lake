@@ -18,7 +18,7 @@ def generate_metadata(submodules_dir, output_file):
                     print(f"Error decoding JSON in {metadata_path}: {e}")
 
     # Save to all_metadata.json
-    with open(OUTPUT_FILE, "w") as f:
+    with open(output_file, "w") as f:
         json.dump(all_metadata, f, indent=4)
         print(f"\n Combined metadata saved to {output_file}")
 
