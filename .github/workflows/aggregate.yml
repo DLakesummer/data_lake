@@ -22,7 +22,7 @@ jobs:
           python-version: '3.x'
 
       - name: Run metadata aggregation script
-        run: python aggregate_metadata.py
+        run: python scripts/aggregate_metadata.py
 
       - name: Commit and push updated all_metadata.json
         run: |
