@@ -43,10 +43,7 @@ jobs:
           exit 0
         fi
 
-        git commit -m "Auto-sync: Update file.txt
-
-Source commit: ${{ github.sha }}
-Triggered by: ${{ github.event_name }}"
+        git commit -m "Auto-sync all_metadata file"
 
         git push
 
