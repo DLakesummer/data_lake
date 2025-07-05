@@ -27,8 +27,8 @@ jobs:
 
     - name: Copy file(s)
       run: |
-        cp data_lake/all_metadata.json \
-           dlakesummer.github.io/docs/assets/js/
+        cp source-repo/all_metadata.json \
+           dest-repo/docs/assets/js/all_metadata.json
 
     - name: Commit & push changes to destination
       run: |
